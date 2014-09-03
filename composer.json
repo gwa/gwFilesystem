@@ -1,0 +1,20 @@
+{
+    "name": "gwa/gw-filesystem",
+    "description": "PHP filesystem classes",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Great White Ark",
+            "homepage": "http://www.greatwhiteark.com"
+        }
+    ],
+    "homepage": "https://github.com/gwa/gwFilesystem",
+    "require": {
+        "gwa/gw-exception": "1.0.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Gwa\\Filesystem\\": "src/Gwa/Filesystem"
+        }
+    }
+}
