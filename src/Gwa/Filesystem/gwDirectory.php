@@ -1,7 +1,7 @@
 <?php
 namespace Gwa\Filesystem;
 
-use Gwa\Core\exceptions\gwFilesystemException;
+use Gwa\Exception\gwFilesystemException;
 
 /**
  * @brief Provides read and delete methods for directories in the server filesystem
