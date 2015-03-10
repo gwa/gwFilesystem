@@ -13,31 +13,36 @@ class gwFile
 {
     /**
      * @access private
-     * @var unknown_type
+     *
+     * @var string
      */
-    private $_fullpath;
+    private $fullpath;
 
     /**
      * constructor
+     *
      * @param string $fullpath
      */
-    public function __construct( $fullpath )
+    public function __construct($fullpath)
     {
-        $this->_fullpath = $fullpath;
+        $this->fullpath = $fullpath;
     }
 
-    /** Checks whether file exists and if it is a regular file
+    /**
+     * Checks whether file exists and if it is a regular file
      * (i.e. not a directory)
+     *
      * @return bool
      */
     public function exists()
     {
-        return file_exists($this->_fullpath) && is_file($this->_fullpath) ? true : false;
+        return file_exists($this->fullpath) && is_file($this->fullpath) ? true : false;
     }
 
     /**
      * Returns true if the file is writeable, or if the file does not exist but
      * the directory is writable, i.e. file can be written
+     *
      * @return bool
      */
     public function isWritable()
@@ -45,7 +50,8 @@ class gwFile
         if (!$this->exists()) {
             return is_writable($this->getPath(PATHINFO_DIRNAME));
         }
-        return is_writable($this->_fullpath);
+
+        return is_writable($this->fullpath);
     }
 
     /**
@@ -53,20 +59,22 @@ class gwFile
      */
     public function isReadable()
     {
-        return is_readable($this->_fullpath);
+        return is_readable($this->fullpath);
     }
 
     /**
      * @param octal $permissions
+     *
      * @return bool
      */
-    public function setPermissions( $permissions )
+    public function setPermissions($permissions)
     {
-        return chmod($this->_fullpath, $permissions);
+        return chmod($this->fullpath, $permissions);
     }
 
     /**
      * Returns the directory containing this file
+     *
      * @return gwDirectory
      */
     public function getDirectory()
@@ -78,6 +86,7 @@ class gwFile
      * returns content of file as a string
      *
      * @return string
+     *
      * @throws gwFilesystemException
      */
     public function getContent()
@@ -85,27 +94,33 @@ class gwFile
         if (!$this->exists()) {
             throw new gwFilesystemException(gwFilesystemException::ERR_FILE_NOT_EXIST, $this->getPath());
         }
+
         if (!$this->isReadable()) {
             throw new gwFilesystemException(gwFilesystemException::ERR_FILE_NOT_READABLE, $this->getPath());
         }
-        return file_get_contents($this->_fullpath);
+
+        return file_get_contents($this->fullpath);
     }
 
     /**
      * replace content of file with string
      *
      * @param string $content
+     *
      * @return int bytes written, or false on failure
+     *
      * @throws gwFilesystemException
      */
-    public function replaceContent( $content )
+    public function replaceContent($content)
     {
         if (!$this->isWritable()) {
             throw new gwFilesystemException(gwFilesystemException::ERR_FILE_NOT_WRITEABLE, $this->getPath());
         }
+
         $handle = $this->_getHandle('w');
         $byteswritten = fwrite($handle, $content);
         fclose($handle);
+
         return $byteswritten;
     }
 
@@ -113,17 +128,21 @@ class gwFile
      * appends content to this file
      *
      * @param string $content
+     *
      * @return int bytes written
-     * throws gwFilesystemException
+     *
+     * @throws gwFilesystemException
      */
-    public function appendContent( $content )
+    public function appendContent($content)
     {
         if (!$this->isWritable()) {
             throw new gwFilesystemException(gwFilesystemException::ERR_FILE_NOT_WRITEABLE, $this->getPath());
         }
+
         $handle = $this->_getHandle('a');
         $byteswritten = fwrite($handle, $content);
         fclose($handle);
+
         return $byteswritten;
     }
 
@@ -135,34 +154,42 @@ class gwFile
         if (!$this->exists()) {
             throw new gwFilesystemException(gwFilesystemException::ERR_FILE_NOT_EXIST);
         }
+
         if (!$this->isReadable()) {
             throw new gwFilesystemException(gwFilesystemException::ERR_FILE_NOT_READABLE);
         }
-        return parse_ini_file($this->_fullpath);
+
+        return parse_ini_file($this->fullpath);
     }
 
     /**
      * return a file pointer handle for this file
      *
      * @param string $mode
+     *
      * @return resource
+     *
      * @throws gwFilesystemException
      */
-    private function _getHandle( $mode='r' )
+    private function _getHandle($mode = 'r')
     {
-        if (!file_exists(dirname($this->_fullpath))) {
+        if (!file_exists(dirname($this->fullpath))) {
             throw new gwFilesystemException(gwFilesystemException::ERR_DIRECTORY_NOT_EXIST);
         }
-        if (!$handle = @fopen($this->_fullpath, $mode)) {
+
+        if (!$handle = @fopen($this->fullpath, $mode)) {
             throw new gwFilesystemException(gwFilesystemException::ERR_DIRECTORY_NOT_EXIST);
             throw new gwFilesystemException(gwFilesystemException::ERR_FILE_NOT_READABLE, $this->getPath());
         }
+
         return $handle;
     }
 
     /**
      * deletes the file
+     *
      * @return boolean
+     *
      * @throws gwFilesystemException
      */
     public function delete()
@@ -170,57 +197,70 @@ class gwFile
         if (!$this->exists()) {
             throw new gwFilesystemException(gwFilesystemException::ERR_FILE_NOT_EXIST, $this->getPath());
         }
+
         if (!$this->isWritable()) {
             throw new gwFilesystemException(gwFilesystemException::ERR_FILE_NOT_WRITEABLE, $this->getPath());
         }
-        return unlink($this->_fullpath);
+
+        return unlink($this->fullpath);
     }
 
     /**
      * Moves file to directory. Creates directory if not exist.
+     *
      * @param gwDirectory|string $dir
+     *
      * @throws gwFilesystemException
+     *
      * @return boolean
      */
-    public function moveTo( $dir )
+    public function moveTo($dir)
     {
         if (!is_a($dir, 'Gwa\Filesystem\gwDirectory')) {
             $dir = gwDirectory::makeDirectoryRecursive($dir);
         }
+
         if (!$dir->isWritable()) {
             throw new gwFilesystemException(gwFilesystemException::ERR_DIRECTORY_NOT_WRITEABLE, $dir->getPath());
         }
+
         $newpath = $dir->getPath().$this->getPath(PATHINFO_BASENAME);
+
         if (rename($this->getPath(), $newpath)) {
-            $this->_fullpath = $newpath;
+            $this->fullpath = $newpath;
+
             return true;
         }
+
         return false;
     }
 
     /**
      * outputs the file with a headers, and exits the script
+     *
      * @param string $filename
+     *
      * @deprecated
      */
-    public function download( $filename=null )
+    public function download($filename = null)
     {
         $headers = $this->getHeaders($filename);
         $headers->send();
-        readfile($this->_fullpath);
+        readfile($this->fullpath);
         exit;
     }
 
     /**
      * @return array
      */
-    public function getDownloadHeaders( $filename=null )
+    public function getDownloadHeaders($filename = null)
     {
         if (!$this->isReadable()) {
             throw new gwFilesystemException(gwFilesystemException::ERR_FILE_NOT_READABLE, $this->getPath());
         }
+
         if (!$filename) {
-            $filename = basename($this->_fullpath);
+            $filename = basename($this->fullpath);
         }
 
         $headers = array();
@@ -230,7 +270,7 @@ class gwFile
         $headers['Expires'] = '0';
         $headers['Cache-Control'] = 'must-revalidate, post-check=0, pre-check=0';
         $headers['Pragma'] = 'public';
-        $headers['Content-Length'] = filesize($this->_fullpath);
+        $headers['Content-Length'] = filesize($this->fullpath);
 
         return $headers;
     }
@@ -239,18 +279,19 @@ class gwFile
      * @param  boolean $withencoding
      * @return string
      */
-    public function getMimeType( $withencoding=false )
+    public function getMimeType($withencoding = false)
     {
         if (!$this->exists()) {
             throw new gwFilesystemException(gwFilesystemException::ERR_FILE_NOT_EXIST, $this->getPath());
         }
 
-        $filename = realpath($this->_fullpath);
+        $filename = realpath($this->fullpath);
 
         if (function_exists('finfo_open')) {
             $finfo = finfo_open($withencoding ? FILEINFO_MIME : FILEINFO_MIME_TYPE);
             $mimetype = finfo_file($finfo, $filename);
             finfo_close($finfo);
+
             return $mimetype;
         }
 
@@ -312,18 +353,21 @@ class gwFile
             'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
         );
 
-        if (strpos('.', $filename)) {
-            $ext = strtolower(array_pop(explode('.', $filename)));
+        $explode = explode('.', $filename);
+
+        if ($ext = end($explode)) {
+            $ext = strtolower($ext);
         }
 
         if ($this->isImage()) {
-            $data = getimagesize($this->_fullpath);
+            $data = getimagesize($this->fullpath);
+
             return $data['mime'];
         } elseif ($ext && array_key_exists($ext, $mimetypes)) {
             return $mimetypes[$ext];
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -337,24 +381,26 @@ class gwFile
 
         if (function_exists('finfo_open')) {
             $finfo = finfo_open(FILEINFO_MIME_ENCODING);
-            $encoding = finfo_file($finfo, realpath($this->_fullpath));
+            $encoding = finfo_file($finfo, realpath($this->fullpath));
             finfo_close($finfo);
+
             return $encoding;
         }
 
-        return null;
+        return;
     }
 
     /**
-     * @param string $pathinfo PATHINFO_DIRNAME, PATHINFO_BASENAME, PATHINFO_EXTENSION or PATHINFO_FILENAME
+     * @param  string $pathinfo PATHINFO_DIRNAME, PATHINFO_BASENAME, PATHINFO_EXTENSION or PATHINFO_FILENAME
      * @return string
      */
-    public function getPath( $pathinfo=null )
+    public function getPath($pathinfo = null)
     {
         if (!$pathinfo) {
-            return $this->_fullpath;
+            return $this->fullpath;
         }
-        return pathinfo($this->_fullpath, $pathinfo);
+
+        return pathinfo($this->fullpath, $pathinfo);
     }
 
     /**
@@ -390,14 +436,16 @@ class gwFile
         if (!$this->exists()) {
             throw new gwFilesystemException(gwFilesystemException::ERR_FILE_NOT_EXIST, $this->getPath());
         }
+
         if (!$this->isReadable()) {
             throw new gwFilesystemException(gwFilesystemException::ERR_FILE_NOT_READABLE, $this->getPath());
         }
 
-        $data = @getimagesize($this->_fullpath);
+        $data = @getimagesize($this->fullpath);
         if (!$data || !$data[0] || !$data[1]) {
             return false;
         }
+
         return true;
     }
 
@@ -406,6 +454,6 @@ class gwFile
      */
     public function getModificationTime()
     {
-        return filemtime($this->_fullpath);
+        return filemtime($this->fullpath);
     }
 }
