@@ -15,7 +15,7 @@ class gwDirectory
 
     /**
      * @brief Constructor to be used only for existing directories.
-     * @param string $filepath
+     * @param string $dirpath
      */
     public function __construct($dirPath)
     {
