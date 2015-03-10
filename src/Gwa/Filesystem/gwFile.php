@@ -13,7 +13,8 @@ class gwFile
 {
     /**
      * @access private
-     * @var unknown_type
+     *
+     * @var string
      */
     private $fullpath;
 
