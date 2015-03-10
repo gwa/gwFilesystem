@@ -117,7 +117,7 @@ class gwFile
             throw new gwFilesystemException(gwFilesystemException::ERR_FILE_NOT_WRITEABLE, $this->getPath());
         }
 
-        $handle = $this->_getHandle('w');
+        $handle = $this->getHandle('w');
         $byteswritten = fwrite($handle, $content);
         fclose($handle);
 
@@ -139,27 +139,11 @@ class gwFile
             throw new gwFilesystemException(gwFilesystemException::ERR_FILE_NOT_WRITEABLE, $this->getPath());
         }
 
-        $handle = $this->_getHandle('a');
+        $handle = $this->getHandle('a');
         $byteswritten = fwrite($handle, $content);
         fclose($handle);
 
         return $byteswritten;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function parseIni()
-    {
-        if (!$this->exists()) {
-            throw new gwFilesystemException(gwFilesystemException::ERR_FILE_NOT_EXIST);
-        }
-
-        if (!$this->isReadable()) {
-            throw new gwFilesystemException(gwFilesystemException::ERR_FILE_NOT_READABLE);
-        }
-
-        return parse_ini_file($this->fullpath);
     }
 
     /**
@@ -171,7 +155,7 @@ class gwFile
      *
      * @throws gwFilesystemException
      */
-    private function _getHandle($mode = 'r')
+    private function getHandle($mode = 'r')
     {
         if (!file_exists(dirname($this->fullpath))) {
             throw new gwFilesystemException(gwFilesystemException::ERR_DIRECTORY_NOT_EXIST);
@@ -236,21 +220,6 @@ class gwFile
     }
 
     /**
-     * outputs the file with a headers, and exits the script
-     *
-     * @param string $filename
-     *
-     * @deprecated
-     */
-    public function download($filename = null)
-    {
-        $headers = $this->getHeaders($filename);
-        $headers->send();
-        readfile($this->fullpath);
-        exit;
-    }
-
-    /**
      * @return array
      */
     public function getDownloadHeaders($filename = null)
@@ -263,7 +232,7 @@ class gwFile
             $filename = basename($this->fullpath);
         }
 
-        $headers = array();
+        $headers = [];
         $headers['Content-type'] = $this->getMimeType(true);
         $headers['Content-disposition'] = 'attachment; filename='.$filename;
         $headers['Content-Transfer-Encoding'] =  'binary';
@@ -276,7 +245,8 @@ class gwFile
     }
 
     /**
-     * @param  boolean $withencoding
+     * @param boolean $withencoding
+     *
      * @return string
      */
     public function getMimeType($withencoding = false)
@@ -297,7 +267,7 @@ class gwFile
 
         // FALLBACK:
 
-        $mimetypes = array(
+        $mimetypes = [
 
             'txt' => 'text/plain',
             'htm' => 'text/html',
@@ -351,7 +321,7 @@ class gwFile
         // open office
             'odt' => 'application/vnd.oasis.opendocument.text',
             'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
-        );
+        ];
 
         $explode = explode('.', $filename);
 
@@ -391,7 +361,8 @@ class gwFile
     }
 
     /**
-     * @param  string $pathinfo PATHINFO_DIRNAME, PATHINFO_BASENAME, PATHINFO_EXTENSION or PATHINFO_FILENAME
+     * @param string|null $pathinfo PATHINFO_DIRNAME, PATHINFO_BASENAME, PATHINFO_EXTENSION or PATHINFO_FILENAME
+     *
      * @return string
      */
     public function getPath($pathinfo = null)
@@ -429,6 +400,7 @@ class gwFile
 
     /**
      * is file an image?
+     *
      * @return bool
      */
     public function isImage()
