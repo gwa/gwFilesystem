@@ -14,6 +14,8 @@ return Symfony\CS\Config\Config::create()
     // use default PSR-2_LEVEL:
      ->fixers(
         [
+            'ordered_use',
+            'short_array_syntax',
             'header_comment',
         ]
     )

@@ -164,7 +164,7 @@ class gwDirectory
      */
     public function getDirectories()
     {
-        $directories = array();
+        $directories = [];
 
         if (!$dh = opendir($this->dirPath)) {
             throw new gwFilesystemException(gwFilesystemException::ERR_DIRECTORY_NOT_READABLE);
@@ -192,7 +192,7 @@ class gwDirectory
      */
     public function getFiles($filter = '')
     {
-        $files = array();
+        $files = [];
 
         if (!$dh = opendir($this->dirPath)) {
             throw new gwFilesystemException(gwFilesystemException::ERR_DIRECTORY_NOT_READABLE);
@@ -261,7 +261,6 @@ class gwDirectory
         for ($i = 0, $l = count($files); $i<$l; $i++) {
             $file = $files[$i];
             $ending = strtolower(substr($file, strpos($file, '.')));
-            $base = substr($file, 0, strpos($file, '.'));
             $newname = $this->getPath().'/'.$prefix.str_pad($count, $pad, '0', STR_PAD_LEFT).$ending;
 
             if (!rename($this->getPath().'/'.$file, $newname)) {
