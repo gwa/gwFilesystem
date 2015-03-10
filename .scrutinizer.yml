@@ -1,6 +1,6 @@
 
 filter:
-    paths: ['src/Gwa/Cache/*']
+    paths: ['src/Gwa/Filesystem/*']
     excluded_paths: [tests/*, vendor/*]
 
 checks:
