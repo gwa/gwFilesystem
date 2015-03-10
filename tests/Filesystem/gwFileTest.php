@@ -64,18 +64,20 @@ class gwFileTest extends PHPUnit_Framework_TestCase
 
     public function testGetMimeTypeAndEncoding()
     {
-        $path = __DIR__.'/../temp/tempfile';
-        $file = new gwFile($path);
+        file_put_contents(__DIR__.'/foo.txt', 'foo');
+        $file = new gwFile(__DIR__.'/foo.txt');
         $this->assertEquals('text/plain', $file->getMimeType());
+        @unlink(__DIR__.'/foo.txt');
     }
 
     public function testGetDownloadHeaders()
     {
-        $path = __DIR__.'/../temp/tempfile';
-        $file = new gwFile($path);
+        file_put_contents(__DIR__.'/foo.txt', 'foo');
+        $file = new gwFile(__DIR__.'/foo.txt');
         $headers = $file->getDownloadHeaders();
         $this->assertTrue(array_key_exists('Content-disposition', $headers));
         $this->assertEquals($file->getMimeType(true), $headers['Content-type']);
+        @unlink(__DIR__.'/foo.txt');
     }
 
     public function testIsImage()

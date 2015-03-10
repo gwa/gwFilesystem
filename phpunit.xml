@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnError="false"
+         stopOnFailure="false"
+         syntaxCheck="true"
+         strict="false"
+         verbose="true"
+         bootstrap="./tests/phpunit_bootstrap.php"
+>
+    <testsuites>
+        <testsuite name="GWA Test Suite">
+            <directory suffix="Test.php">./tests</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+      <whitelist processUncoveredFilesFromWhitelist="false">
+        <directory suffix=".php">./src</directory>
+      </whitelist>
+    </filter>
+</phpunit>
