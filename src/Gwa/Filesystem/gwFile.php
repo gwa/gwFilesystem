@@ -1,4 +1,5 @@
 <?php
+
 namespace Gwa\Filesystem;
 
 use Gwa\Exception\gwFilesystemException;
@@ -7,6 +8,7 @@ use Gwa\Exception\gwFilesystemException;
  * @brief Provides read, write, append and delete methods for text files in the server filesystem
  *
  * @ingroup data
+ *
  * @author Timothy Groves
  */
 class gwFile
@@ -19,7 +21,7 @@ class gwFile
     private $fullpath;
 
     /**
-     * constructor
+     * constructor.
      *
      * @param string $fullpath
      */
@@ -30,7 +32,7 @@ class gwFile
 
     /**
      * Checks whether file exists and if it is a regular file
-     * (i.e. not a directory)
+     * (i.e. not a directory).
      *
      * @return bool
      */
@@ -41,7 +43,7 @@ class gwFile
 
     /**
      * Returns true if the file is writeable, or if the file does not exist but
-     * the directory is writable, i.e. file can be written
+     * the directory is writable, i.e. file can be written.
      *
      * @return bool
      */
@@ -73,7 +75,7 @@ class gwFile
     }
 
     /**
-     * Returns the directory containing this file
+     * Returns the directory containing this file.
      *
      * @return gwDirectory
      */
@@ -83,7 +85,7 @@ class gwFile
     }
 
     /**
-     * returns content of file as a string
+     * returns content of file as a string.
      *
      * @return string
      *
@@ -103,7 +105,7 @@ class gwFile
     }
 
     /**
-     * replace content of file with string
+     * replace content of file with string.
      *
      * @param string $content
      *
@@ -125,7 +127,7 @@ class gwFile
     }
 
     /**
-     * appends content to this file
+     * appends content to this file.
      *
      * @param string $content
      *
@@ -147,7 +149,7 @@ class gwFile
     }
 
     /**
-     * return a file pointer handle for this file
+     * return a file pointer handle for this file.
      *
      * @param string $mode
      *
@@ -170,7 +172,7 @@ class gwFile
     }
 
     /**
-     * deletes the file
+     * deletes the file.
      *
      * @return boolean
      *
