@@ -1,4 +1,5 @@
 <?php
+
 namespace Gwa\Filesystem;
 
 use Gwa\Exception\gwFilesystemException;
@@ -15,6 +16,7 @@ class gwDirectory
 
     /**
      * @brief Constructor to be used only for existing directories.
+     *
      * @param string $dirPath
      */
     public function __construct($dirPath)
