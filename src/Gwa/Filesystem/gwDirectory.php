@@ -35,8 +35,6 @@ class gwDirectory
      * @param string $dirname
      *
      * @return gwDirectory
-     *
-     * @deprecated not intuitive.
      */
     public static function makeDirectory($dirPath, $dirname = '', $mode = 0770, $replaceexisting = false)
     {
