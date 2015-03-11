@@ -15,7 +15,7 @@ class gwDirectory
 
     /**
      * @brief Constructor to be used only for existing directories.
-     * @param string $filepath
+     * @param string $dirPath
      */
     public function __construct($dirPath)
     {
@@ -65,7 +65,7 @@ class gwDirectory
      * @brief Creates a directoy recursively.
      *
      * @param string $dir
-     * @param string $mode
+     * @param integer $mode
      *
      * @return gwDirectory
      */

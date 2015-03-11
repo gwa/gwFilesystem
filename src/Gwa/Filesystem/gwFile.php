@@ -235,7 +235,7 @@ class gwFile
         $headers = [];
         $headers['Content-type'] = $this->getMimeType(true);
         $headers['Content-disposition'] = 'attachment; filename='.$filename;
-        $headers['Content-Transfer-Encoding'] =  'binary';
+        $headers['Content-Transfer-Encoding'] = 'binary';
         $headers['Expires'] = '0';
         $headers['Cache-Control'] = 'must-revalidate, post-check=0, pre-check=0';
         $headers['Pragma'] = 'public';
