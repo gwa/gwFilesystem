@@ -64,7 +64,7 @@ class gwDirectory
     /**
      * @brief Creates a directoy recursively.
      *
-     * @param string $dir
+     * @param string  $dir
      * @param integer $mode
      *
      * @return gwDirectory
