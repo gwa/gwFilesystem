@@ -12,7 +12,8 @@ $finder = Symfony\CS\Finder\DefaultFinder::create()
 
 return Symfony\CS\Config\Config::create()
     // use default PSR-2_LEVEL:
-     ->fixers(
+    ->level(Symfony\CS\FixerInterface::PSR2_LEVEL)
+    ->fixers(
         [
             'ordered_use',
             'short_array_syntax',

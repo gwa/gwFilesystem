@@ -11,11 +11,11 @@
     ],
     "homepage": "https://github.com/gwa/gwFilesystem",
     "require": {
-        "gwa/gw-exception": "~1.0.1"
+        "gwa/gw-exception": "~1.0.2"
     },
     "require-dev": {
-        "fabpot/php-cs-fixer" : "~1.5",
-        "phpunit/phpunit"     : "~4.4.0"
+        "fabpot/php-cs-fixer" : "~1.7",
+        "phpunit/phpunit"     : "~4.6.6"
     },
     "autoload": {
         "psr-4": {
